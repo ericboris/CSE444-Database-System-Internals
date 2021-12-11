@@ -1,0 +1,9 @@
+Feedback for: eboris91
+--------------------------------------------------------------
+Total Score (%): 100
+Unit Test Score (out of 32): 32
+System Test Score (out of 4): 4
+Code Score (out of 10): 10
+Writeup Score (out of 10): 10
+--------------------------------------------------------------
+Great job on lab1, Eric! I really liked the writeup, they way it was well broekn down into sections. It shows you have a great understanding of the different components of the lab and how they work together. Best of luck for future labs! ~ Prati.

@@ -1,0 +1,50 @@
+In your own words, describe what this lab was about: Describe the various components that you implemented and how they work. 
+This part needs to demonstrate your understanding of the lab! 
+If your description looks like a copy paste of the instructions or a copy-paste of the provided documentation you will lose points.
+
+    Implement Transactions using NO STEAL and FORCE buffer management policy at the page-level granularity. 
+    NO STEAL only evicts dirty pages after a transaction commits.
+    FORCE only flushed dirty pages after a transaction commits.
+    Implement a LockManager that manages PageLocks, the locks on a given page.
+    LockManager acquires and releases locks as necessary and manages deadlocks.
+    Make changes to BufferPool to support new concurrency features.
+
+        LockManager:
+            PageLocks: Manage locks on a given page.
+            lockMap: Store and link given PageId to PageLock instance.
+            transactionMap: Store and link given TransactionId to the PageId it locks.
+            waitMap: Directed graph of waiting transactions for deadlock detection.
+            acquire: Acquire read/write lock permissions.
+            isDeadlocked: Detect deadlocks.
+            release: Release all locks on a transaction.
+
+        BufferPool:
+            getPage: Add logic to acquire lock before disk access.
+            transactionComplete: Implement NO STEAL and FORCE.
+            evictPage: Check NO STEAL implementation.
+
+            Describe a unit test that could be added to improve the set of unit tests that we provided for this lab.
+
+    Check whether a lock is created by same transaction on evict and acquire.
+
+Describe any design decisions you made, including your deadlock detection policy, locking granularity, etc.
+
+    LockManager:
+        Implement locking at the page level for simple implementation.
+        Lock acquisition is performed by repeatedly requesting given level of permission as long as no deadlock is detected.
+        Deadlock detection is performed using both graph dependency.
+        Graph dependency is checked using breadth-first search for loops.
+
+    BufferPool:
+        Add support for LockManager.
+            Lock acquisition.
+            Dirty page detection.
+            Page flush and release on transaction complete.
+
+Discuss and justify any changes you made to the API.
+
+    N/a.
+
+If you have any feedback for us on the assignment, you can add it to the writeup, send us an email, or make a note and paste your note in the course evaluation form at the end of the quarter.
+
+    N/a.

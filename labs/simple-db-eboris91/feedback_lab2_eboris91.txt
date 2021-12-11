@@ -1,0 +1,13 @@
+Feedback for: eboris91
+--------------------------------------------------------------
+Total Score (%): 100
+Unit Test Score (out of 38): 38
+System Test Score (out of 24): 24
+Code Score (out of 10): 10
+Writeup Score (out of 10): 10
+--------------------------------------------------------------
+Code Feedback:
+Good job with the code, great to see your queries ran with the help of a hashjoin!
+
+Writeup Feedback:
+Great work with the writeup, it looks very neat and I like the detail you went into describing the components. The only thing i would consider is marking your writeup into subparts as in the spec (so bullet point 4 would be unit test cases for example) Best of luck for the next lab! ~Prati

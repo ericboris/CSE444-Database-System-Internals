@@ -1,0 +1,53 @@
+1. Explain what happens in your implementation of SimpleDB from Lab 1 if multiple queries execute at the same time. 
+Each query only performs a sequential scan of one table. 
+All queries touch different tables. 
+Discuss when data is read from disk and what goes on in the buffer pool. 
+Do not worry about concurrency control nor failure recovery.
+
+Assume that there are 2 queries, q1 and q2. 
+Assume that the BufferPool holds 5 pages.
+Assume that a page holds 3 tuples.
+
+Queries q1 and q2 are executed simultaneously.
+SeqScan operators s1 and s2 are opened.
+s1 and s2 request tuples via HeapFiles h1 and h2.
+h1 and h2 each call getPage on the BufferPool.
+Requested page p1 for q1, is not in BufferPool.
+Requested page p1 for q2, is not in BufferPool.
+BufferPool calls readPage on h1 and h2.
+q1-p1 is returned to BufferPool.
+q2-p2 is returned to BufferPool.
+The BufferPool has 2 of 5 slots filled.
+q1-p1 is returned to h1 access method.
+q2-p1 is returned to h2 access method. 
+s1 calls next on HeapFile iterator and corresponding tuples are returned up the tree from there.
+s2 calls next on HeapFile iterator and corresponding tuples are returned up the tree from there.
+s1 calls next on HeapFile iterator and corresponding tuples are returned up the tree from there.
+s2 calls next on HeapFile iterator and corresponding tuples are returned up the tree from there.
+s1 calls next on HeapFile iterator and corresponding tuples are returned up the tree from there.
+s2 calls next on HeapFile iterator and corresponding tuples are returned up the tree from there.
+(3 tuples returned for q1 and 3 tuples returned for q2, exhausting q1-p1 and q2-p1.)
+Assume that q1 and q2 each need more tuples.
+The above process is repeated.
+The BufferPool has 4 of 5 slots filled.
+Assume that q1 and q2 each need more tuples.
+getPage throws an exception because there are insufficient slots available and no eviction policy defined.
+
+2. Describe a scenario for multiple queries running in lab 1 that would benefit from caching in the buffer pool. 
+Again assume that each query only does a sequential scan, but for this question queries may be accessing the same tables at the same time. 
+In your example it might help to specify an example size for the buffer pool and relation(s) that will make the scenario clear.
+
+There are queries q1 and q2 running. 
+q1 makes requests to tables t1 and t2. 
+q2 makes requests to tables t2 and t3.
+Tables t1, t2, and t3 each fit on a single page. 
+The BufferPool can only hold two pages. 
+q1 is executed.
+BufferPool loads and caches pages containing t1 and t2.
+q1 finishes.
+q2 is executed.
+BufferPool evicts page containing t1 and loads page containing t3.
+q2 finishes.
+
+Without using BufferPool, the page containing t2 would have to be loaded twice for q1 and q2. 
+Using BufferPool to cache pages prevents multiple accesses to disk for pages containing relevant tables that have already been loaded. 

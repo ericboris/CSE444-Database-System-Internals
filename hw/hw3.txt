@@ -1,0 +1,55 @@
+1.
+(a)
+    1. Selectivity = 1/10
+    2. Selectivity = 1/V(S, e) = 1/V(S,F) = 1/1000
+    3. Selectivity = 1/max(V(R,c), V(S, d)) = 1/max(20, 50) = 1/50
+    4. Selectivity = 1/V(R,b) + 1/V(R,b) = 1/100 + 1/100 = 1/50
+    5. Selectivity = 1/max(V(S,g), V(T,h) = 1/max(40, 100) = 1/100
+
+(b)
+    |R_1| = T(R) * 1/10 = 10000/10 = 1000
+    |R_2| = T(S) * 1/1000 = 10000/1000 = 10
+    |R_3| = (|R_1| * |R_2|)/50 = (1000 * 10)/50 = 200
+    |R_4| = |R_3|/50 = 200/50 = 4
+    |R_5| = (|R_4| * T(T))/100 = (4 * 10000)/100 = 400
+    |R_6| = |R_5| = 400
+
+(c)
+    total_cost = c_1 + c_2 + c_3 + c_4 + c_5 + c_6
+        = (90) + (1000 * 1/10 * 1/100) + (0) + (0) + ((T(R_4) * B(T))/V(T,h)) + (0)
+        = 90 + 1 + 40
+        = 131
+
+2.
+(a)
+    subquery | cost (I/O) | size of output (t/p) | plan | p/k \
+    R | 100 | 1k/100 | seq scan | k \
+    S | 1k | 10k/1k | seq scan | k \
+    W | 10 | 100/10 | seq scan | k \
+    RS | 100100 | 10k/2k | page-at-a-time, nested-loop | k \
+    SR | 101000 | 10k/2k | page-at-a-time, nested-loop | p \
+    RW | 1100 | 100/20 | page-at-a-time, nested-loop | p \
+    WR | 1010 | 100/20 | page-at-a-time, nested-loop | k \
+    SW | 11000 | 1000/200 | PNLJ | p \
+    WS | 10010 | 1000/200 | PNLJ | k \
+    (RS)W | 122100 | 1000/300 | PNLJ | p \
+    (WR)S | 21030 | 1000/300 | PNLJ | p \
+
+(b)
+
+    The query is slightly modified.
+    Add an unclustered B+ tree index on S.d.
+    Add a clustered B+ tree index on R.b.
+    Selinger optimizer has access to different optimization choices. 
+    If R (join) S has lower cost then this could percolate, potentially reducing the cost of the remaining joins. 
+    Selinger optimizer could consider filtering on R.b reducing the cost of the remaining joins.
+
+
+(c)
+    ORDER BY or aggregation with Selinger optimizer is interesting.
+    How these are ordered can greatly reduce query I/O cost.
+    Attributes appearing in Join conditions are interesting too.
+    Specific ordering can greatly affect query I/O cost.
+    Selinger optimizer considers these interesting orders to find the cheapest I/O costs. 
+    In 1. an interesting order would be predicates R.a=S.d and R.c=T.h.
+

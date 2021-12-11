@@ -1,0 +1,63 @@
+Report the runtimes of the queries from Exercise 7. 
+If a query takes a very long time to complete, you can report that the query did not complete after running for however long you let it run.
+
+Query Runtimes:
+    1: 0.75
+    2: 1.17
+    3: 1.64
+
+In your own words, describe what this lab was about: Describe the various components that you implemented and how they work. 
+This part needs to demonstrate your understanding of the lab! 
+If your description looks like a copy paste of the instructions or a copy-paste of the provided documentation you will lose points.
+
+This lab covers two main areas.
+1. Implement additional relational algebra operations and table modification operations and their related components:
+    Predicate and Join Predicate:
+	The predicate classes provide comparisons to fields made by operations with specific conditions.
+	Predicate join is unary in comparing single tuples against as specific Field.
+	Join Predicate is binary and makes comparisons using two tuples against a specific Field.
+    Filter:
+	Filter out tuples.
+	Iterate over tuples in given child Iterator and filter out tuples based on the given predicate. 	
+    Join:
+	Merge two tuples.
+	Iterate over tuples in given child Iterators and join based on given predicate. 
+	Use two types of join:
+	    Hash Join if join condition is equals.
+	    Nested Loop Join otherwise.
+    IntegerAggregator, StringAggregator, and Aggregate:
+	Provide aggregate query functions over Integers and Strings.
+	Iterate over tuples, group by common field index, store temporary results in a map.
+    HeapPage and HeapFile:
+	Flesh out methods for adding and removing tuples from tables.
+    Insert and Delete:
+	Provide operators for inserting and removing tuples from tables.
+	Handle changing header page at page level, add and remove at file level, reflect change in buffer pool.
+2. Flesh out BufferPool management with an Eviction Policy.
+    BufferPool:
+	Use LRU eviction policy.
+	Create and reverse array of inserted PageId. Evict first appropriate page encounted in reversed array iteration.
+
+Describe any design decisions you made, including your choice of page eviction policy. 
+If you used something other than a nested-loops join, describe the tradeoffs of the algorithm you chose.
+
+Use a combination of hash join and nested-loop join. 
+Hash join performs better than nested-loop on equality comparison at cost of increased space requirement.
+Chose LRU eviction policy since LRU tends to perform better across-the-board.
+
+Give one example of a unit test that could be added to improve the set of unit tests that we provided for this lab. 
+You do not need to write the code of the unit test, only describe it in the write-up. 
+If you wrote one or more especially useful new unit-tests, you can submit a pull request and we will consider integrating your tests into the lab for next year. 
+Pull requests won't get extra credit, only eternal glory if the tests get integrated.
+
+A useful unit test would be to check that a deleted tuple is reflected in the HeapFile and BufferPool. 
+I.e. that delete performs comprehensively.
+
+Discuss and justify any changes you made to the API.
+
+N/a.
+
+Describe any missing or incomplete elements of your code.
+
+N/a.
+

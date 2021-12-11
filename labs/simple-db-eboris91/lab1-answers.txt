@@ -1,0 +1,69 @@
+Name, StudentId:
+    Eric Boris, eboris91	
+
+In your own words, describe what Lab1 was about: Describe the various components that you implemented and how they work. 
+This part needs to demonstrate your understanding of the lab! 
+If your description looks like a copy paste of the instructions or a copy-paste of the provided documentation you will lose points.
+
+Overview:
+    Lab1 implements the fundamental components of the SimpleDB architecture for memory management, access management, and the query processor.
+    With these components, SimpleDB can now execute simple queries.
+    The process is as follows:
+	A query is made. 
+	OpIterator is called.
+	OpIterator calls HeapPage for the relevant pages.
+	HeapPage calls HeapFile to load the relevant files. 
+	HeapFile queries the BufferPool. 
+	If the queried is not in the BufferPool then BufferPool reads from disk. 
+	BufferPool evicts if necessary.
+	BufferPool stores the queried.
+	BufferPool returns the queried.
+	The recursive down-the-chain process repeats until the operators are extinguished.
+
+Components:
+    Tuple and TupleDesc:
+	Enables DbPage and DbFile classes to identify the field of each tuple and schema. 
+	Uses the type of field for computing the page header size, page size, and number of slots.
+    Catalog:
+	Holds a mapping to DbTable classes that each contain information about a table in the Catalog.
+    BufferPool:
+	Cache pages obtained from disk for faster access by HeapFile class.
+    HeapPage:
+	Handle pages of partial information about schema files. 
+	Manage header and tuple information.
+    HeapFile:
+	Manage HeapPages and organize pages into single table. 
+	HeapFileIterator:
+	    Give operator the ability to interact with one tuple at a time. 
+    SeqScan:
+	Operator that performs linear scan through table.
+    RecordId:
+	Store tuple-page location information.
+    HeapPageId:
+	Store table-page location information.
+
+Describe any design decisions you made. 
+These may be minimal for Lab 1.
+
+    Provide nested DbTable class in Catalog to streamline table access. 
+    Initially used several maps but these were error prone and not as fast. 
+
+    Use nested Iterator classes that return Iterators for better OOP encapsulation. 
+
+Give one example of a unit test that could be added to improve the set of unit tests that we provided for this lab. 
+You do not need to write the code of the unit test, only describe it in the write-up.
+If you wrote one or more especially useful new unit-tests, you can submit a pull request and we will consider integrating your tests into the lab for next year.
+Pull requests won't get extra credit, only eternal glory if the tests get integrated.
+
+    There are many methods that don't receive test coverage or receive minimal coverage. 
+    Ex: Catalog.getPrimaryKey() and Catalog.getTableName() have no coverage while Catalog.addTable() tests don't check name=null.
+
+Discuss and justify any changes you made to the API. 
+You really should not change the API. 
+If you plan to make a change, ask the TAs first.
+
+    N/A
+
+Describe any missing or incomplete elements of your code.
+    
+    N/A

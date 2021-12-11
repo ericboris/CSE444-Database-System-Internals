@@ -1,0 +1,40 @@
+Lab 4 implements log-based rollback and recovery.
+It also changes the buffer management policy to NOFORCE so that dirty pages are not forced to flush to disk after commit.
+These changes make SimpleDB more efficient by avoiding unnecessary disk accesses.
+
+Changes include:
+    Rollback:
+        Compile the set of relevant tids into a log and undo the changes to their states.
+
+    Recover: 
+        Revert the commit state of the database. 
+        Use redo to redo committed pages.
+        Use undo to undo uncommitted pages.
+
+    Undo:
+        Iterate over the log and set previously updated pages to a pre-updated state.
+
+    Redo:
+        Iterate over the log and update their states.
+
+    BufferPool:
+        Switch to NOFORCE policy.
+        Update evictPage():
+            remove dirty-page check before flush.
+        Update transactionComplete():
+            add logging.
+
+Design Decisions:
+    Undo:
+        Abstract the undo functionality required by both rollback and recovery into a method.
+        This allows single transaction undo in rollback and multiple transaction undo in recovery. 
+
+    No were made outside of BufferPool and LogFile.
+
+Unit Test:
+    Three transactions: 
+        T1, T2, and T3. 
+        T1 inserts and aborts. 
+        T2 inserts and commits. 
+        T3 inserts and does not commit. 
+        Only T2 is present.

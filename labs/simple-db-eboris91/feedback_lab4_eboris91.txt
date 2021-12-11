@@ -1,0 +1,9 @@
+Feedback for: eboris91
+--------------------------------------------------------------
+Total Score (%): 98
+Unit Test Score (out of 38): 0
+System Test Score (out of 24): 10
+Code Score (out of 10): 10
+Writeup Score (out of 10): 8
+--------------------------------------------------------------
+Great job with lab4! Well written and organized code in logfile. We do expect a little more on how recovery as a process works, and how it links together with the other parts of the lab. Other than that, atb for the final lab! ~Prati.
